@@ -1,0 +1,15 @@
+- Run sonarqube local server
+  - ```docker run -d --name sonarqube -p 9000:9000 sonarqube```
+- Logue em localhost:9000
+  - user: admin
+  - password: admin
+  - Troque a senha
+- Crie um projeto
+  - Dê o nome de CK
+  - Use a configuração global
+- Dentro do projeto escolha analizar um projeto localmente
+  - Apenas clique "Generate" e então "Continue"
+- No passo 2 seleciona Maven
+  - Execute o comando fornecido em seu terminal (Java e Maven devem estar instalados)
+  - OBS: Isso ira buildar e analisar o projeto. Ao final do processo os resultados aparecerão no browser
+
