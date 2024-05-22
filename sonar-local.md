@@ -12,4 +12,4 @@
 - No passo 2 seleciona Maven
   - Execute o comando fornecido em seu terminal (Java e Maven devem estar instalados)
   - OBS: Isso ira buildar e analisar o projeto. Ao final do processo os resultados aparecerão no browser
-
+  - DISCLAIMER: Salve esse comando em algum canto pra conseguir avaliar o msm projeto depois
