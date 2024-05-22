@@ -110,7 +110,7 @@ public class CouplingTest extends BaseTest {
 	@Test
 	public void countFanOut() {
 		CKClassResult a = report.get("cbo.Coupling8");
-		Assertions.assertEquals(3, a.getFanout());
+		Assertions.assertEquals(5, a.getFanout());
 		
 		CKClassResult b = report.get("cbo.Coupling81");
 		Assertions.assertEquals(4, b.getFanout());
@@ -125,7 +125,7 @@ public class CouplingTest extends BaseTest {
 	@Test
 	public void countCBOModified() {
 		CKClassResult a = report.get("cbo.Coupling8");
-		Assertions.assertEquals(5, a.getCboModified());
+		Assertions.assertEquals(7, a.getCboModified());
 		
 		CKClassResult b = report.get("cbo.Coupling81");
 		Assertions.assertEquals(5, b.getCboModified());

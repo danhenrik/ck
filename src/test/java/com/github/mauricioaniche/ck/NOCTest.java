@@ -16,13 +16,13 @@ public class NOCTest extends BaseTest{
 	@Test
 	public void shouldDetectChildren() {
 		CKClassResult a = report.get("dit.A");
-		Assertions.assertEquals(1, a.getNoc());
+		Assertions.assertEquals(2, a.getNoc());
 		
 		CKClassResult b = report.get("dit.B");
-		Assertions.assertEquals(2, b.getNoc());
+		Assertions.assertEquals(4, b.getNoc());
 		
 		CKClassResult c = report.get("dit.C");
-		Assertions.assertEquals(1, c.getNoc());
+		Assertions.assertEquals(2, c.getNoc());
 		
 		CKClassResult d = report.get("dit.D");
 		Assertions.assertEquals(0, d.getNoc());

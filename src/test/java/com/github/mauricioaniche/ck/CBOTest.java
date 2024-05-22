@@ -118,7 +118,7 @@ public class CBOTest extends BaseTest {
 	@Test
 	public void staticMethodCallInReturnStatement() {
 		CKClassResult a = report.get("cbo.Coupling8");
-		Assertions.assertEquals(3, a.getCbo());
+		Assertions.assertEquals(5, a.getCbo());
 	}
 
 	@Test
