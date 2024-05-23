@@ -118,7 +118,7 @@ public class TightClassCohesion implements CKASTVisitor, ClassLevelMetric {
             result.setLooseClassCohesion(-1);
         } else {
             //maximum number of possible connections (N * (N -1))
-            float np = result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1);
+            float np = (float)(result.getVisibleMethods().size() * (result.getVisibleMethods().size() - 1));
 
             //number of direct connections (number of edges in the connection graph) in this class
             Set<ImmutablePair<String, String>> directConnections = getDirectConnections(result);

@@ -73,14 +73,13 @@ public class WMC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	public void visit(InfixExpression node) {
 
 		if(stack.isEmpty()) {
-			Set<InfixExpression.Operator> operatorsToConsider = new HashSet<InfixExpression.Operator>() {{
-				add(InfixExpression.Operator.LESS);
-				add(InfixExpression.Operator.GREATER);
-				add(InfixExpression.Operator.LESS_EQUALS);
-				add(InfixExpression.Operator.GREATER_EQUALS);
-				add(InfixExpression.Operator.EQUALS);
-				add(InfixExpression.Operator.NOT_EQUALS);
-			}};
+			Set<InfixExpression.Operator> operatorsToConsider = new HashSet<>();
+			operatorsToConsider.add(InfixExpression.Operator.LESS);
+			operatorsToConsider.add(InfixExpression.Operator.GREATER);
+			operatorsToConsider.add(InfixExpression.Operator.LESS_EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.GREATER_EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.NOT_EQUALS);
 
 			if (operatorsToConsider.contains(node.getOperator()))
 				increaseCc();

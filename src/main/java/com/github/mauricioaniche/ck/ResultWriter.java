@@ -70,7 +70,7 @@ public class ResultWriter {
             "uniqueWordsQty",
             "modifiers",
             "logStatementsQty"};
-    private static final String[] METHOD_HEADER = { 
+    private static final String[] METHOD_HEADER = {
             "file", 
             "class", 
             "method", 
@@ -125,17 +125,21 @@ public class ResultWriter {
      * @throws IOException If headers cannot be written
      */
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
-        FileWriter classOut = new FileWriter(classFile);
-        this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
-        FileWriter methodOut = new FileWriter(methodFile);
-        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+        try (FileWriter classOut = new FileWriter(classFile)) {
+            this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
+        }
+        try (FileWriter methodOut = new FileWriter(methodFile)) {
+            this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+        }
 
         this.variablesAndFields = variablesAndFields;
         if(variablesAndFields) {
-            FileWriter variableOut = new FileWriter(variableFile);
-            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-            FileWriter fieldOut = new FileWriter(fieldFile);
-            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            try (FileWriter variableOut = new FileWriter(variableFile)) {
+                this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            }
+            try (FileWriter fieldOut = new FileWriter(fieldFile)) {
+                this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            }
         }
     }
 
