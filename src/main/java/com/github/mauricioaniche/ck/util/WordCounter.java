@@ -5,65 +5,59 @@ import java.util.stream.Collectors;
 
 public class WordCounter {
 
-	private static Set<String> javaKeywords;
+	private static Set<String> javaKeywords = new HashSet<>(Arrays.asList(
+        "abstract",
+        "continue",
+        "for",
+        "new",
+        "switch",
+        "assert***",
+        "default",
+        "goto*",
+        "package",
+        "synchronized",
+        "boolean",
+        "do",
+        "if",
+        "private",
+        "this",
+        "break",
+        "double",
+        "implements",
+        "protected",
+        "throw",
+        "byte",
+        "else",
+        "import",
+        "public",
+        "throws",
+        "case",
+        "enum****",
+        "instanceof",
+        "return",
+        "transient",
+        "catch",
+        "extends",
+        "int",
+        "short",
+        "try",
+        "char",
+        "final",
+        "interface",
+        "static",
+        "void",
+        "class",
+        "finally",
+        "long",
+        "strictfp**",
+        "volatile",
+        "const*",
+        "float",
+        "native",
+        "super",
+        "while",
 
-	static {
-		javaKeywords = new HashSet<String>(){{
-			add("abstract");
-			add("continue");
-			add("for");
-			add("new");
-			add("switch");
-			add("assert***");
-			add("default");
-			add("goto*");
-			add("package");
-			add("synchronized");
-			add("boolean");
-			add("do");
-			add("if");
-			add("private");
-			add("this");
-			add("break");
-			add("double");
-			add("implements");
-			add("protected");
-			add("throw");
-			add("byte");
-			add("else");
-			add("import");
-			add("public");
-			add("throws");
-			add("case");
-			add("enum****");
-			add("instanceof");
-			add("return");
-			add("transient");
-			add("catch");
-			add("extends");
-			add("int");
-			add("short");
-			add("try");
-			add("char");
-			add("final");
-			add("interface");
-			add("static");
-			add("void");
-			add("class");
-			add("finally");
-			add("long");
-			add("strictfp**");
-			add("volatile");
-			add("const*");
-			add("float");
-			add("native");
-			add("super");
-			add("while");
-
-			add("String");
-		}};
-	}
-
+        "String"));
 
 	public static Set<String> wordsIn(String fullString) {
 		String[] cleanString = fullString
