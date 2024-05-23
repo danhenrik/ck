@@ -9,9 +9,10 @@ import java.util.Map;
 
 public class ResultWriter {
 
+    private static final String CLASS = "class";
     private static final String[] CLASS_HEADER = {
             "file",
-            "class",
+            CLASS,
             "type",
 
             /* OO Metrics */
@@ -71,9 +72,9 @@ public class ResultWriter {
             "modifiers",
             "logStatementsQty"};
     private static final String[] METHOD_HEADER = {
-            "file", 
-            "class", 
-            "method", 
+            "file",
+            CLASS,
+            "method",
             "constructor", 
             "line", 
             "cbo", 
@@ -106,7 +107,7 @@ public class ResultWriter {
             "logStatementsQty", 
             "hasJavaDoc" };
                           
-    private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
+    private static final String[] VAR_FIELD_HEADER = { "file", CLASS, "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
     private CSVPrinter classPrinter;

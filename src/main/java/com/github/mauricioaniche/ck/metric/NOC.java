@@ -52,7 +52,7 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	
 	@Override
 	public void setResult(CKClassResult result) {
-		
+		// This override is empty on purpose because we need to implement the interface, but we don't want the underlying implementation collaterals.
 	}
 
 }
