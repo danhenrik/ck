@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class MetricsFinder {
 
-	private static List<Class<? extends MethodLevelMetric>> methodLevelClasses = null;
-	private static List<Class<? extends ClassLevelMetric>> classLevelClasses = null;
+	private List<Class<? extends MethodLevelMetric>> methodLevelClasses = null;
+	private List<Class<? extends ClassLevelMetric>> classLevelClasses = null;
 	private DependencySorter sorter;
 
 	public MetricsFinder(DependencySorter sorter) {
