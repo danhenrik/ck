@@ -130,9 +130,8 @@ public class LOCCalculator {
             }
             if (commentBegan(subString)) {
                 return false;
-            } else {
-                return true;
             }
+            return true;
         }
     }
 

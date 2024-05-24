@@ -6,10 +6,7 @@ import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
 import com.github.mauricioaniche.ck.util.JDTUtils;
 import org.eclipse.jdt.core.dom.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
@@ -28,14 +25,14 @@ public class CKVisitor extends ASTVisitor {
 	class ClassInTheStack {
 		CKClassResult result;
 		List<ClassLevelMetric> classLevelMetrics;
-		Stack<MethodInTheStack> methods;
+		Deque<MethodInTheStack> methods;
 
 
 		ClassInTheStack() {
-			methods = new Stack<>();
+			methods = new ArrayDeque<>();
 		}
 	}
-	private Stack<ClassInTheStack> classes;
+	private Deque<ClassInTheStack> classes;
 
 	private Set<CKClassResult> collectedClasses;
 
@@ -48,7 +45,7 @@ public class CKVisitor extends ASTVisitor {
 		this.cu = cu;
 		this.classLevelMetrics = classLevelMetrics;
 		this.methodLevelMetrics = methodLevelMetrics;
-		this.classes = new Stack<>();
+		this.classes = new ArrayDeque<>();
 		this.collectedClasses = new HashSet<>();
 	}
 
@@ -63,14 +60,14 @@ public class CKVisitor extends ASTVisitor {
 		int modifiers = node.getModifiers();
 		CKClassResult currentClass = new CKClassResult(sourceFilePath, className, type, modifiers);
 		currentClass.setLoc(calculate(node.toString()));
-		
+
 		// there might be metrics that use it
 		// (even before a class is declared)
-		if(!classes.isEmpty()) {			
+		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
 			if (!classes.peek().methods.isEmpty())
 				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.visit(node));
-				
+
 		}
 
 		// create a set of visitors, just for the current class
@@ -1280,7 +1277,7 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public void endVisit(Javadoc node) {
-		if(!classes.empty()) {
+		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 			if (!classes.peek().methods.isEmpty())
 				classes.peek().methods.peek().methodLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
@@ -1288,7 +1285,7 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	public void endVisit(QualifiedName node) {
-		if(!classes.empty()) {
+		if(!classes.isEmpty()) {
 			classes.peek().classLevelMetrics.stream().map(metric -> (CKASTVisitor) metric).forEach(ast -> ast.endVisit(node));
 		}
 		if(!classes.isEmpty() && !classes.peek().methods.isEmpty())
