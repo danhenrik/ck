@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CouplingTest extends BaseTest {
+public class CouplingMetricTest extends BaseTest {
 
 	@BeforeAll
 	public void setUp() {
