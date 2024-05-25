@@ -78,13 +78,6 @@ public class CKClassResult extends CKResult {
 		return className;
 	}
 
-	public void setWmc(int cc) {
-		this.wmc = cc;
-	}
-	public int getWmc() {
-		return wmc;
-	}
-
 	public void setLcom(int lcom) {
 		this.lcom = lcom;
 	}
