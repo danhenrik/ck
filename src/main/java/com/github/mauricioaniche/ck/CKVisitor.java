@@ -107,13 +107,11 @@ public class CKVisitor extends ASTVisitor {
 
 	public boolean visit(MethodDeclaration node) {
 
-		IMethodBinding binding = node.resolveBinding();
+		node.resolveBinding();
 		String currentMethodName = JDTUtils.getMethodFullName(node);
 		String currentQualifiedMethodName = JDTUtils.getQualifiedMethodFullName(node);
 		boolean isConstructor = node.isConstructor();
 		
-		String className = ((currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1) > 0) ? currentQualifiedMethodName.substring(0, (currentQualifiedMethodName.lastIndexOf(currentMethodName) - 1)) : "";
-
 		CKMethodResult currentMethod = new CKMethodResult(currentMethodName, currentQualifiedMethodName, isConstructor, node.getModifiers());
 		currentMethod.setLoc(calculate(node.toString()));
 		currentMethod.setStartLine(JDTUtils.getStartLine(cu, node));
