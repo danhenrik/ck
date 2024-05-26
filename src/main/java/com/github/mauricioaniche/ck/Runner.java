@@ -64,7 +64,7 @@ public class Runner {
 				//let's replace this with a call for logger.log
 				//System.err.println("Error in " + sourceFilePath);
 				//e.printStackTrace(System.err);
-				logger.log(Level.SEVERE,"Error in " + sourceFilePath, e);
+				logger.log(Level.SEVERE, e, () -> "Error in " + sourceFilePath);
 			}
 		});
 		
