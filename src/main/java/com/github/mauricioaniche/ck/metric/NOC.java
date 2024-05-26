@@ -24,16 +24,12 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	public void visit(TypeDeclaration node){
 		ITypeBinding binding = node.resolveBinding();
 
-        String name;
         if(binding != null){
-			name = binding.getQualifiedName();
 			ITypeBinding father = binding.getSuperclass();
 			if(father != null){
 				this.extras.plusOne(father.getQualifiedName());
 			}
 		} else {
-			name = node.getName().getFullyQualifiedName();
-
 			SimpleType castedFatherType = null;
 			
 			if(node.getSuperclassType() instanceof SimpleType)
