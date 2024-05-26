@@ -11,6 +11,9 @@ import java.util.concurrent.Callable;
 
 import static com.github.mauricioaniche.ck.util.LOCCalculator.calculate;
 
+import com.github.mauricioaniche.ck.exceptions.MethodLevelVisitorInstantiationException;
+import com.github.mauricioaniche.ck.exceptions.ClassLevelVisitorInstantiationException;
+
 public class CKVisitor extends ASTVisitor {
 
 	private String sourceFilePath;
@@ -304,7 +307,7 @@ public class CKVisitor extends ASTVisitor {
 			classes.forEach(c -> { c.setClassName(className); });
 			return classes;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate class level visitors", e);
+			throw new ClassLevelVisitorInstantiationException(e);
 		}
 	}
 
@@ -314,7 +317,7 @@ public class CKVisitor extends ASTVisitor {
 			methods.forEach(m -> { m.setMethodName(methodName); });
 			return methods;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate method level visitors", e);
+			throw new MethodLevelVisitorInstantiationException(e);
 		}
 	}
 
