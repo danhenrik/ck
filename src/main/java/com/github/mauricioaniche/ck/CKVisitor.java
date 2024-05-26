@@ -154,7 +154,6 @@ public class CKVisitor extends ASTVisitor {
 
 	public boolean visit(AnonymousClassDeclaration node) {
 		java.util.List<String> stringList = new java.util.ArrayList<>();
-		stringList = stringList.stream().map(string -> string.toString()).collect(java.util.stream.Collectors.toList());
 
 		// there might be metrics that use it
 		// (even before an anonymous class is created)
@@ -304,7 +303,6 @@ public class CKVisitor extends ASTVisitor {
 			List<ClassLevelMetric> classes = classLevelMetrics.call();
 			classes.forEach(c -> { c.setClassName(className); });
 			return classes;
-//			return classLevelMetrics.call();
 		} catch(Exception e) {
 			throw new RuntimeException("Could not instantiate class level visitors", e);
 		}
@@ -315,7 +313,6 @@ public class CKVisitor extends ASTVisitor {
 			List<MethodLevelMetric> methods = methodLevelMetrics.call();
 			methods.forEach(m -> { m.setMethodName(methodName); });
 			return methods;
-//			return methodLevelMetrics.call();
 		} catch(Exception e) {
 			throw new RuntimeException("Could not instantiate method level visitors", e);
 		}
@@ -326,7 +323,13 @@ public class CKVisitor extends ASTVisitor {
 	}
 
 	private String getTypeOfTheUnit(TypeDeclaration node) {
-		return node.isInterface() ? "interface" : (classes.isEmpty() ? "class" : "innerclass");
+
+		//new refactor
+		if(node.isInterface()){
+			return "interface";
+		} else if (classes.isEmpty()) {
+			return "class";
+		} else return "innerclass";
 	}
 
 	// -------------------------------------------------------

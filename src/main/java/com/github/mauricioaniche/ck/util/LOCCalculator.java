@@ -10,6 +10,10 @@ import java.io.InputStreamReader;
 
 public class LOCCalculator {
 
+    private LOCCalculator() {
+        throw new IllegalStateException("Utility class");
+    }
+
     private static Logger log = Logger.getLogger(LOCCalculator.class);
     private static boolean commentBegan = false;
 

@@ -14,8 +14,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 
 public class NOC implements CKASTVisitor, ClassLevelMetric{
 
-	private String name;
-	private NOCExtras extras;
+    private NOCExtras extras;
 	
 	public NOC() {
 		this.extras = NOCExtras.getInstance();
@@ -24,17 +23,17 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	@Override
 	public void visit(TypeDeclaration node){
 		ITypeBinding binding = node.resolveBinding();
-		
-		if(binding != null){
-			this.name = binding.getQualifiedName();
+
+        String name;
+        if(binding != null){
+			name = binding.getQualifiedName();
 			ITypeBinding father = binding.getSuperclass();
 			if(father != null){
 				this.extras.plusOne(father.getQualifiedName());
 			}
 		} else {
-			this.name = node.getName().getFullyQualifiedName();
-			Type type = node.getSuperclassType();
-			
+			name = node.getName().getFullyQualifiedName();
+
 			SimpleType castedFatherType = null;
 			
 			if(node.getSuperclassType() instanceof SimpleType)

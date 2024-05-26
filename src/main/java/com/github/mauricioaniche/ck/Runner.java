@@ -3,13 +3,22 @@ package com.github.mauricioaniche.ck;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class Runner {
 
 	public static void main(String[] args) throws IOException {
 
+		Logger logger = Logger.getLogger(Runner.class.getName());
+
 		if (args == null || args.length < 1) {
-			System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False> <path to save the output files>");
+
+			//previous solution using system.out, replaced by logger
+			//System.out.println("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False> <path to save the output files>");
+
+			logger.info("Usage java -jar ck.jar <path to project> <use Jars=true|false> <max files per partition, 0=automatic selection> <print variables and fields metrics? True|False> <path to save the output files>");
+
 			System.exit(1);
 		}
 
@@ -51,8 +60,11 @@ public class Runner {
 
 			@Override
 			public void notifyError(String sourceFilePath, Exception e) {
-				System.err.println("Error in " + sourceFilePath);
-				e.printStackTrace(System.err);
+
+				//let's replace this with a call for logger.log
+				//System.err.println("Error in " + sourceFilePath);
+				//e.printStackTrace(System.err);
+				logger.log(Level.SEVERE,"Error in " + sourceFilePath, e);
 			}
 		});
 		
@@ -62,6 +74,9 @@ public class Runner {
 		}
 		
 		writer.flushAndClose();
-		System.out.println("Metrics extracted!!!");
+
+		//also replaced by a logger
+		//System.out.println("Metrics extracted!!!");
+		logger.info("Metrics extracted!!!");
 	}
 }

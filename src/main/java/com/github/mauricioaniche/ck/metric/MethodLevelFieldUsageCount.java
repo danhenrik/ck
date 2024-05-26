@@ -35,8 +35,8 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 	}
 
 	public void visit(VariableDeclarationFragment node) {
-		String var = node.getName().toString();
-		variables.add(var);
+		String temporaryVariable = node.getName().toString();
+		variables.add(temporaryVariable );
 	}
 
 	public void visit(FieldAccess node) {
@@ -55,10 +55,14 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 		isQualifiedName = false;
 	}
 
-	private void plusOne(String var) {
-		if (!occurrences.containsKey(var))
-			occurrences.put(var, 0);
-		occurrences.put(var, occurrences.get(var) + 1);
+	private void plusOne(String temporaryVariable) {
+
+		//sonarqube suggests using computeIfAbsent, but IntelliJ suggests putIfAbsent
+		//occurrences.computeIfAbsent(var, k -> 0);
+
+		occurrences.putIfAbsent(temporaryVariable, 0);
+
+		occurrences.put(temporaryVariable, occurrences.get(temporaryVariable) + 1);
 	}
 
 	public void visit(SimpleName node) {

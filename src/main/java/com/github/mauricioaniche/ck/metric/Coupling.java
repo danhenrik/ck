@@ -53,10 +53,8 @@ public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetr
 	}
 
 	public void visit(ReturnStatement node) {
-		if(this.className != null){
-			if (node.getExpression() != null) {
-				coupleTo(node.getExpression().resolveTypeBinding());
-			}
+		if(this.className != null && node.getExpression() != null){
+			coupleTo(node.getExpression().resolveTypeBinding());
 		}
 	}
 
@@ -68,9 +66,8 @@ public class Coupling implements CKASTVisitor, ClassLevelMetric, MethodLevelMetr
 	}
 	
 	public void visit(ThrowStatement node) {
-		if(this.className != null) {
-			if(node.getExpression()!=null)
-				coupleTo(node.getExpression().resolveTypeBinding());
+		if(this.className != null && node.getExpression()!=null) {
+			coupleTo(node.getExpression().resolveTypeBinding());
 		}
 	}
 

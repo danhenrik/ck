@@ -17,9 +17,10 @@ public class NOCExtras {
 	public void plusOne(String clazz){
 		if(clazz.equals("java.lang.Object"))
 			return;
-		
-		if(!toAdd.containsKey(clazz))
-			toAdd.put(clazz, 0);
+
+		//sonarqube suggests using computeIfAbsent, but IntelliJ suggests putIfAbsent
+		//toAdd.computeIfAbsent(clazz, k -> 0);
+		toAdd.putIfAbsent(clazz, 0);
 		
 		toAdd.put(clazz, toAdd.get(clazz) + 1);	
 	}

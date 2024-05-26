@@ -6,6 +6,10 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class FileUtils {
+    private FileUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     //Get all directories from the directory at the given path.
 	public static String[] getAllDirs(String path) {
 		try (Stream<Path> paths = Files.walk(Paths.get(path))) {
