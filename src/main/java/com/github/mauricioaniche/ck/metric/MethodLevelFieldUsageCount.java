@@ -56,12 +56,7 @@ public class MethodLevelFieldUsageCount implements CKASTVisitor, MethodLevelMetr
 	}
 
 	private void plusOne(String temporaryVariable) {
-
-		//sonarqube suggests using computeIfAbsent, but IntelliJ suggests putIfAbsent
-		//occurrences.computeIfAbsent(var, k -> 0);
-
 		occurrences.putIfAbsent(temporaryVariable, 0);
-
 		occurrences.put(temporaryVariable, occurrences.get(temporaryVariable) + 1);
 	}
 
