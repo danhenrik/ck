@@ -5,6 +5,10 @@ import java.util.stream.Collectors;
 
 public class WordCounter {
 
+	private WordCounter() {
+		throw new IllegalStateException("Utility class");
+	}
+
 	private static Set<String> javaKeywords = new HashSet<>(Arrays.asList(
         "abstract",
         "continue",

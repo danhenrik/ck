@@ -39,7 +39,7 @@ public class MethodInvocationsLocal implements CKASTVisitor, ClassLevelMetric {
         //extract all indirect local invocations for all methods in the current class
         for (CKMethodResult method : methods){
             //extract all local invocations for the current method
-            Map<String, Set<String>> localInvocations =  invocations(method.getQualifiedMethodName(), new HashMap(), methodInvocationsLocal);
+            Map<String, Set<String>> localInvocations =  invocations(method.getQualifiedMethodName(), new HashMap<>(), methodInvocationsLocal);
             methodInvocationsIndirectLocal.put(method.getQualifiedMethodName(), localInvocations);
         }
         return methodInvocationsIndirectLocal;

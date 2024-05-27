@@ -1,11 +1,17 @@
 package com.github.mauricioaniche.ck.util;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.stream.Stream;
 
 public class FileUtils {
+    private FileUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     //Get all directories from the directory at the given path.
 	public static String[] getAllDirs(String path) {
 		try (Stream<Path> paths = Files.walk(Paths.get(path))) {
@@ -14,8 +20,8 @@ public class FileUtils {
 					.filter(x -> !isGitDir(x.toAbsolutePath().toString()))
 					.map(x -> x.toAbsolutePath().toString())
 					.toArray(String[]::new);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 
@@ -38,8 +44,8 @@ public class FileUtils {
                     .filter(x -> x.toAbsolutePath().toString().toLowerCase().endsWith(ending))
                     .map(x -> x.toAbsolutePath().toString())
                     .toArray(String[]::new);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 

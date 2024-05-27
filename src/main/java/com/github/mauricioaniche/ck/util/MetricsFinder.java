@@ -2,10 +2,15 @@ package com.github.mauricioaniche.ck.util;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
+import com.github.mauricioaniche.ck.metric.RunAfter;
 import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Modifier;
+import com.github.mauricioaniche.ck.exceptions.MethodLevelMetricInstantiationException;
+import com.github.mauricioaniche.ck.exceptions.MethodLevelMetricsLoadingException;
+import com.github.mauricioaniche.ck.exceptions.ClassLevelMetricsLoadingException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,7 +40,7 @@ public class MetricsFinder {
 
 			return metrics;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate a method level metric. Something is really wrong", e);
+			throw new MethodLevelMetricInstantiationException(e);
 		}
 	}
 
@@ -52,7 +57,7 @@ public class MetricsFinder {
 
 			return metrics;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate a method level metric. Something is really wrong", e);
+			throw new MethodLevelMetricInstantiationException(e);
 		}
 	}
 
@@ -65,7 +70,7 @@ public class MetricsFinder {
 					.collect(Collectors.toList()));
 
 		} catch(Exception e) {
-			throw new RuntimeException("Could not find method level metrics. Something is really wrong", e);
+			throw new MethodLevelMetricsLoadingException(e);
 		}
 	}
 
@@ -86,7 +91,7 @@ public class MetricsFinder {
 
 			classLevelClasses = sorter.sort(new ArrayList<>(concreteClassLevelMetrics));
 		} catch(Exception e) {
-			throw new RuntimeException("Could not find class level metrics. Something is really wrong", e);
+			throw new ClassLevelMetricsLoadingException(e);
 		}
 	}
 
