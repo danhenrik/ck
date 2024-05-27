@@ -9,9 +9,10 @@ import java.util.Map;
 
 public class ResultWriter {
 
+    private static final String CLASS = "class";
     private static final String[] CLASS_HEADER = {
             "file",
-            "class",
+            CLASS,
             "type",
 
             /* OO Metrics */
@@ -70,10 +71,10 @@ public class ResultWriter {
             "uniqueWordsQty",
             "modifiers",
             "logStatementsQty"};
-    private static final String[] METHOD_HEADER = { 
-            "file", 
-            "class", 
-            "method", 
+    private static final String[] METHOD_HEADER = {
+            "file",
+            CLASS,
+            "method",
             "constructor", 
             "line", 
             "cbo", 
@@ -106,7 +107,7 @@ public class ResultWriter {
             "logStatementsQty", 
             "hasJavaDoc" };
                           
-    private static final String[] VAR_FIELD_HEADER = { "file", "class", "method", "variable", "usage" };
+    private static final String[] VAR_FIELD_HEADER = { "file", CLASS, "method", "variable", "usage" };
     private final boolean variablesAndFields;
 
     private CSVPrinter classPrinter;
@@ -125,17 +126,21 @@ public class ResultWriter {
      * @throws IOException If headers cannot be written
      */
     public ResultWriter(String classFile, String methodFile, String variableFile, String fieldFile, boolean variablesAndFields) throws IOException {
-        FileWriter classOut = new FileWriter(classFile);
-        this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
-        FileWriter methodOut = new FileWriter(methodFile);
-        this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+        try (FileWriter classOut = new FileWriter(classFile)) {
+            this.classPrinter = new CSVPrinter(classOut, CSVFormat.DEFAULT.withHeader(CLASS_HEADER));
+        }
+        try (FileWriter methodOut = new FileWriter(methodFile)) {
+            this.methodPrinter = new CSVPrinter(methodOut, CSVFormat.DEFAULT.withHeader(METHOD_HEADER));
+        }
 
         this.variablesAndFields = variablesAndFields;
         if(variablesAndFields) {
-            FileWriter variableOut = new FileWriter(variableFile);
-            this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
-            FileWriter fieldOut = new FileWriter(fieldFile);
-            this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            try (FileWriter variableOut = new FileWriter(variableFile)) {
+                this.variablePrinter = new CSVPrinter(variableOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            }
+            try (FileWriter fieldOut = new FileWriter(fieldFile)) {
+                this.fieldPrinter = new CSVPrinter(fieldOut, CSVFormat.DEFAULT.withHeader(VAR_FIELD_HEADER));
+            }
         }
     }
 

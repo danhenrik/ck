@@ -24,7 +24,7 @@ public class NumberOfLogStatements implements CKASTVisitor, MethodLevelMetric, C
      */
     public static boolean isLogStatement(String line) {
         line = line.toLowerCase().trim();
-        return line.matches(".*\\.(at)?(info|warn|debug|error|trace)\\(.*");
+        return line.matches("\\w*\\.(at)?(info|warn|debug|error|trace)\\(.*");
     }
 
     @Override

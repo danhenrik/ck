@@ -2,17 +2,21 @@ package com.github.mauricioaniche.ck.util;
 
 import com.github.mauricioaniche.ck.metric.ClassLevelMetric;
 import com.github.mauricioaniche.ck.metric.MethodLevelMetric;
-import com.github.mauricioaniche.ck.metric.RunAfter;
 import com.github.mauricioaniche.ck.metric.VariableOrFieldMetric;
 import org.reflections.Reflections;
+
+import java.lang.reflect.Modifier;
+import com.github.mauricioaniche.ck.exceptions.MethodLevelMetricInstantiationException;
+import com.github.mauricioaniche.ck.exceptions.MethodLevelMetricsLoadingException;
+import com.github.mauricioaniche.ck.exceptions.ClassLevelMetricsLoadingException;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class MetricsFinder {
 
-	private static List<Class<? extends MethodLevelMetric>> methodLevelClasses = null;
-	private static List<Class<? extends ClassLevelMetric>> classLevelClasses = null;
+	private List<Class<? extends MethodLevelMetric>> methodLevelClasses = null;
+	private List<Class<? extends ClassLevelMetric>> classLevelClasses = null;
 	private DependencySorter sorter;
 
 	public MetricsFinder(DependencySorter sorter) {
@@ -35,7 +39,7 @@ public class MetricsFinder {
 
 			return metrics;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate a method level metric. Something is really wrong", e);
+			throw new MethodLevelMetricInstantiationException(e);
 		}
 	}
 
@@ -52,7 +56,7 @@ public class MetricsFinder {
 
 			return metrics;
 		} catch(Exception e) {
-			throw new RuntimeException("Could not instantiate a method level metric. Something is really wrong", e);
+			throw new MethodLevelMetricInstantiationException(e);
 		}
 	}
 
@@ -61,20 +65,32 @@ public class MetricsFinder {
 			Reflections reflections = new Reflections("com.github.mauricioaniche.ck.metric");
 
 			methodLevelClasses = sorter.sort(reflections.getSubTypesOf(MethodLevelMetric.class).stream()
-					.filter(x -> variablesAndFields || !Arrays.asList(x.getInterfaces()).contains(VariableOrFieldMetric.class))
+					.filter(x -> filterMethodLevelClasses(variablesAndFields, x))
 					.collect(Collectors.toList()));
 
 		} catch(Exception e) {
-			throw new RuntimeException("Could not find method level metrics. Something is really wrong", e);
+			throw new MethodLevelMetricsLoadingException(e);
 		}
+	}
+
+	private static boolean filterMethodLevelClasses(boolean variablesAndFields, Class<? extends MethodLevelMetric> methodLevelMetric) {
+		return !Modifier.isAbstract(methodLevelMetric.getModifiers()) &&
+				(variablesAndFields ||
+				!Arrays.asList(methodLevelMetric.getInterfaces()).contains(VariableOrFieldMetric.class));
 	}
 
 	private void loadClassLevelClasses() {
 		try {
 			Reflections reflections = new Reflections("com.github.mauricioaniche.ck.metric");
-			classLevelClasses = sorter.sort(new ArrayList<>(reflections.getSubTypesOf(ClassLevelMetric.class)));
+
+			Set<Class<? extends ClassLevelMetric>> classLevelMetrics = reflections.getSubTypesOf(ClassLevelMetric.class);
+			Set<Class<? extends ClassLevelMetric>> concreteClassLevelMetrics = classLevelMetrics.stream()
+					.filter(classMetric -> !Modifier.isAbstract(classMetric.getModifiers()))
+					.collect(Collectors.toSet());
+
+			classLevelClasses = sorter.sort(new ArrayList<>(concreteClassLevelMetrics));
 		} catch(Exception e) {
-			throw new RuntimeException("Could not find class level metrics. Something is really wrong", e);
+			throw new ClassLevelMetricsLoadingException(e);
 		}
 	}
 

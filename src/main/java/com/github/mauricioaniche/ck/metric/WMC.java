@@ -10,10 +10,13 @@ import java.util.*;
 public class WMC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 
 	protected int cc = 0;
-	// this stack helps us in knowing whether we could evaluate InfixExpressions or not
-	// if we count the conditions directly in the branch node (e.g., if, for, ...), then
-	// do not need to (re-)count the Infix agains
-	// this is needed for some inline conditions, e.g., boolean x = a > 10;
+
+	/**
+	 *  this stack helps us in knowing whether we could evaluate InfixExpressions or not
+	 * if we count the conditions directly in the branch node (e.g., if, for, ...), then
+	 * do not need to (re-)count the Infix agains
+	 * this is needed for some inline conditions, e.g., {@code boolean x = a > 10;}
+	 */
 	private LinkedList<ASTNode> stack = new LinkedList<>();
 
 	@Override
@@ -73,14 +76,13 @@ public class WMC implements CKASTVisitor, ClassLevelMetric, MethodLevelMetric {
 	public void visit(InfixExpression node) {
 
 		if(stack.isEmpty()) {
-			Set<InfixExpression.Operator> operatorsToConsider = new HashSet<InfixExpression.Operator>() {{
-				add(InfixExpression.Operator.LESS);
-				add(InfixExpression.Operator.GREATER);
-				add(InfixExpression.Operator.LESS_EQUALS);
-				add(InfixExpression.Operator.GREATER_EQUALS);
-				add(InfixExpression.Operator.EQUALS);
-				add(InfixExpression.Operator.NOT_EQUALS);
-			}};
+			Set<InfixExpression.Operator> operatorsToConsider = new HashSet<>();
+			operatorsToConsider.add(InfixExpression.Operator.LESS);
+			operatorsToConsider.add(InfixExpression.Operator.GREATER);
+			operatorsToConsider.add(InfixExpression.Operator.LESS_EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.GREATER_EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.EQUALS);
+			operatorsToConsider.add(InfixExpression.Operator.NOT_EQUALS);
 
 			if (operatorsToConsider.contains(node.getOperator()))
 				increaseCc();

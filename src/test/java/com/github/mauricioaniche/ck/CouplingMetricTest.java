@@ -4,64 +4,35 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class CouplingTest extends BaseTest {
+public class CouplingMetricTest extends BaseTest {
 
 	@BeforeAll
 	public void setUp() {
 		report = run(fixturesDir() + "/cbo");
 	}
-	
-	@Test
-	public void ignoreJavaTypes() {
-		CKClassResult a = report.get("cbo.Coupling0");
-		Assertions.assertEquals(0, a.getCboModified());
-		Assertions.assertEquals(0, a.getFanin());
-		Assertions.assertEquals(0, a.getFanout());
-	}
-	
-	@Test
-	public void countDifferentPossibilitiesOfDependencies() {
-		CKClassResult a = report.get("cbo.Coupling1");
-		Assertions.assertEquals(6, a.getCboModified());
-		Assertions.assertEquals(0, a.getFanin());
-		Assertions.assertEquals(6, a.getFanout());
-	}
-	
-	@Test
-	public void countEvenWhenNotResolved() {
-		
-		CKClassResult a = report.get("cbo.Coupling3");
-		Assertions.assertEquals(1, a.getCboModified());
-		Assertions.assertEquals(0, a.getFanin());
-		Assertions.assertEquals(1, a.getFanout());
-	}
-	
-	@Test
-	public void countInterfacesAndInheritances() {
-		
-		CKClassResult b = report.get("cbo.Coupling2");
-		Assertions.assertEquals(5, b.getCboModified());
-		Assertions.assertEquals(0, b.getFanin());
-		Assertions.assertEquals(5, b.getFanout());
-	}
 
-	@Test
-	public void countClassCreations() {
-		CKClassResult b = report.get("cbo.Coupling4");
-		Assertions.assertEquals(3, b.getCboModified());
-		Assertions.assertEquals(0, b.getFanin());
-		Assertions.assertEquals(3, b.getFanout());
-	}
+	@ParameterizedTest
+	@CsvSource({
+			"cbo.Coupling0, 0, 0, 0",
+			"cbo.Coupling1, 6, 0, 6",
+			"cbo.Coupling3, 1, 0, 1",
+			"cbo.Coupling2, 5, 0, 5",
+			"cbo.Coupling4, 3, 0, 3",
+			"cbo.MethodParams, 2, 0, 2",
+			"cbo.NotResolved, 5, 0, 5"
+	})
 
-	@Test
-	public void countMethodParameters() {
-		
-		CKClassResult b = report.get("cbo.MethodParams");
-		Assertions.assertEquals(2, b.getCboModified());
-		Assertions.assertEquals(0, b.getFanin());
-		Assertions.assertEquals(2, b.getFanout());
+	//this parameterized test replaced "ignoreJavaTypes", "countDifferentPossibilitiesOfDependencies", "countEvenWhenNotResolved"
+	//"countInterfacesAndInheritances", "countClassCreations", "countMethodParameters", "fullOfNonResolvedTypes"
+	public void countCoupling(String className, int expectedCboModified, int expectedFanin, int expectedFanout) {
+		CKClassResult result = report.get(className);
+		Assertions.assertEquals(expectedCboModified, result.getCboModified());
+		Assertions.assertEquals(expectedFanin, result.getFanin());
+		Assertions.assertEquals(expectedFanout, result.getFanout());
 	}
 
 	@Test
@@ -84,14 +55,7 @@ public class CouplingTest extends BaseTest {
 		Assertions.assertEquals(3, c.getMethod("am4/0").get().getFanout());
 	}
 
-	@Test
-	public void fullOfNonResolvedTypes() {
-		CKClassResult b = report.get("cbo.NotResolved");
-		Assertions.assertEquals(5, b.getCboModified());
-		Assertions.assertEquals(0, b.getFanin());
-		Assertions.assertEquals(5, b.getFanout());
-	}
-	
+
 	@Test
 	public void countFanIn() {
 		CKClassResult a = report.get("cbo.Coupling8");

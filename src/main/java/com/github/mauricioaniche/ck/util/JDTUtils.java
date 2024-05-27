@@ -18,6 +18,10 @@ public class JDTUtils {
 	 * TODO: better ideas are welcome.
 	 */
 
+	private JDTUtils(){
+		throw new IllegalStateException("Utility class");
+	}
+
 	public static int getStartLine(CompilationUnit cu, MethodDeclaration node) {
 		return node.getBody() != null ?
 				cu.getLineNumber(node.getBody().getStartPosition()) :
@@ -127,7 +131,6 @@ public class JDTUtils {
 
 	//Helper method to extract the number of arguments from an argument list used to generate the method signature for MethodInvocation nodes
 	private static String getMethodSignature(List<?> arguments, List<?> typeArguments) {
-		int argumentCount = arguments != null ? arguments.size() : 0;
 		List<String> parameterTypes = typeArguments.stream().map(object -> object.toString()).collect(Collectors.toList());
 		return formatSignature(parameterTypes);
 	}

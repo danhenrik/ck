@@ -14,8 +14,7 @@ import com.github.mauricioaniche.ck.CKClassResult;
 
 public class NOC implements CKASTVisitor, ClassLevelMetric{
 
-	private String name;
-	private NOCExtras extras;
+    private NOCExtras extras;
 	
 	public NOC() {
 		this.extras = NOCExtras.getInstance();
@@ -24,17 +23,13 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	@Override
 	public void visit(TypeDeclaration node){
 		ITypeBinding binding = node.resolveBinding();
-		
-		if(binding != null){
-			this.name = binding.getQualifiedName();
+
+        if(binding != null){
 			ITypeBinding father = binding.getSuperclass();
 			if(father != null){
 				this.extras.plusOne(father.getQualifiedName());
 			}
 		} else {
-			this.name = node.getName().getFullyQualifiedName();
-			Type type = node.getSuperclassType();
-			
 			SimpleType castedFatherType = null;
 			
 			if(node.getSuperclassType() instanceof SimpleType)
@@ -52,7 +47,7 @@ public class NOC implements CKASTVisitor, ClassLevelMetric{
 	
 	@Override
 	public void setResult(CKClassResult result) {
-		
+		// This override is empty on purpose because we need to implement the interface, but we don't want the underlying implementation collaterals.
 	}
 
 }

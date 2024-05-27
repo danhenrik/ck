@@ -54,7 +54,7 @@ public class CK {
 
 	public void calculate(String path, CKNotifier notifier) {
 		String[] javaFiles = FileUtils.getAllJavaFiles(path);
-		log.info("Found " + javaFiles.length + " java files");
+		log.info(String.format("Found %d java files", javaFiles.length));
 
 		calculate(Paths.get(path), notifier,
 		 	Stream.of(javaFiles)
@@ -80,12 +80,12 @@ public class CK {
 	 */
 	public void calculate(Path path, CKNotifier notifier, Path... javaFilePaths) {
 		String[] srcDirs = FileUtils.getAllDirs(path.toString());
-		log.info("Found " + srcDirs.length + " src dirs");
+		log.info(String.format("Found %d src dirs", srcDirs.length));
 
 		String[] allDependencies = useJars ? FileUtils.getAllJars(path.toString()) : null;
 
 		if(useJars)
-			log.info("Found " + allDependencies.length + " jar dependencies");
+			log.info(String.format("Found %d jar dependencies", allDependencies.length));
 		
 		MetricsExecutor storage = new MetricsExecutor(classLevelMetrics, methodLevelMetrics, notifier);
 
